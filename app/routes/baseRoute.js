@@ -9,6 +9,7 @@ module.exports = function (app) {
 
         app.route('/'+name+'/:id')
             .get(controller.getModel)
+            .put(controller.updateModel)
             .delete(controller.removeModel);
     };
 

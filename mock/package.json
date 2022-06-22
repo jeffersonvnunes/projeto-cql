@@ -1,0 +1,28 @@
+{
+  "name": "mock-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "json-server generate.js --delay 1000 --no-cors --routes routes.json --port 8008",
+    "js:watch": "watchify index.js -d -o build.js -v",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.15.3",
+    "browserify": "^14.1.0",
+    "casual": "^1.5.10",
+    "faker": "^3.1.0",
+    "gerador-validador-cpf": "^3.1.1",
+    "lodash": "^4.17.4",
+    "watchify": "^3.9.0"
+  },
+  "dependencies": {
+    "json-server": "^0.9.5",
+    "latitude": "^1.8.1",
+    "random-material-color": "^1.0.3"
+  }
+}

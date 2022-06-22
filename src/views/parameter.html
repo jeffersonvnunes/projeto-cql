@@ -1,0 +1,103 @@
+<h1 class="text-center">Parâmetro</h1>
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+<form ng-submit="save()">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+        <a href="#/parameters" class="btn btn-warning">Voltar</a>
+    </div>
+    <section class="row">
+        <div class="col-sm-8">
+           <div class="form-group">
+               <label for="name">Nome</label>
+               <input type="text" class="form-control" id="name"
+                      name="name" required ng-model="parameter.name">
+           </div>
+        </div>
+        <div class="col-sm-4">
+           <div class="checkbox center-v">
+               <label>
+                   <input type="checkbox" ng-model="parameter.active"> Ativo
+               </label>
+           </div>
+        </div>
+    </section>
+    <section>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <h4>Filtros da Pesquisa</h4>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h4 class="panel-title">Filtro</h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="btn btn-primary" style="margin-bottom: 15px;" ng-click="addFilter()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll-y" style="max-height: 11em;">
+                            <div class="row card" style="margin-right: 0" ng-repeat="filter in parameter.filters" ng-class="getFilterClass($index)"
+                                 ng-click="setFilter(filter, $index)">
+                                <div class="col-xs-11 same-height">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="filteridentifier" placeholder="Identificador"
+                                               name="filteridentifier" ng-model="filter.identifier">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="filterdescription" placeholder="Descrição"
+                                               name="filterdescription" ng-model="filter.description">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 same-height center">
+                                    <button type="button" class="btn btn-danger" ng-click="removeFilter($index)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div ng-show="parameter.selectedFilter" style="margin-top: 10px">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h4 class="panel-title">Valores</h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="btn btn-primary" style="margin-bottom: 15px; margin-top: 10px;" ng-click="addValues()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll-y" style="max-height: 11em;">
+                            <div class="row card" style="margin-right: 0" ng-repeat="value in parameter.selectedFilter.values">
+                                <div class="col-xs-11 same-height">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="valuedescription" placeholder="Descrição"
+                                               name="valuedescription" ng-model="value.description">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="valuevalue" placeholder="Valor"
+                                               name="valuevalue" ng-model="value.value">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 same-height center">
+                                    <div type="button" class="btn btn-danger" ng-click="removeValue($index)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

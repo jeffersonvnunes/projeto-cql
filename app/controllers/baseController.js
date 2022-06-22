@@ -11,9 +11,9 @@ module.exports = function () {
                 function(models) {
                     res.json(models);
                 },
-                function(erro) {
-                    console.error(erro);
-                    res.status(500).json(erro);
+                function(error) {
+                    console.error(error);
+                    res.status(500).json(error);
                 }
             );
     };
@@ -30,9 +30,9 @@ module.exports = function () {
                         res.status(404).send();
                     }
                 },
-                function(erro) {
-                    console.log(erro);
-                    res.status(404).json(erro);
+                function(error) {
+                    console.log(error);
+                    res.status(404).json(error);
                 }
             );
     };
@@ -45,8 +45,8 @@ module.exports = function () {
                 function() {
                     res.end();
                 },
-                function(erro) {
-                    return console.error(erro);
+                function(error) {
+                    return console.error(error);
                 }
             );
     };
@@ -56,14 +56,14 @@ module.exports = function () {
         var _id = req.body._id;
 
         if(_id) {
-            controller.Model.findByIdAndUpdate(_id, req.body).exec()
+            controller.Model.findByIdAndUpdate(_id, req.body, {new:true}).exec()
                 .then(
                     function(model) {
                         res.json(model);
                     },
-                    function(erro) {
-                        console.error(erro);
-                        res.status(500).json(erro);
+                    function(error) {
+                        console.error(error);
+                        res.status(500).json(error);
                     }
                 );
         } else {
@@ -72,12 +72,29 @@ module.exports = function () {
                     function(model) {
                         res.status(201).json(model);
                     },
-                    function(erro) {
-                        console.log(erro);
-                        res.status(500).json(erro);
+                    function(error) {
+                        console.log(error);
+                        res.status(500).json(error);
                     }
                 );
         }
+    };
+
+    controller.updateModel = function(req, res) {
+
+        var _id = req.params.id;
+
+        controller.Model.findByIdAndUpdate(_id, req.body, {new:true}).exec()
+            .then(
+                function(model) {
+                    res.json(model);
+                },
+                function(error, status) {
+                    console.error(error);
+                    res.status(500).json(error);
+                }
+            );
+
     };
 
     return controller;

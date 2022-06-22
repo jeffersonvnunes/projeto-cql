@@ -1,0 +1,48 @@
+
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+
+<div class="slideshow-container">
+    <div class="slide " ng-repeat="slide in presentation.views">
+        <h3 class="text-center">
+            {{slide.title}}
+        </h3>
+        <div gridster="gridsterOpts">
+            <ul>
+                <li gridster-item row="dash.row" col="dash.col" size-x="dash.sizeX" size-y="dash.sizeY" ng-repeat="dash in slide.dashboards">
+                    <div class="flex-display">
+                        <div class="filter" ng-repeat="filter in dash.filters">
+                            {{filter.getDescription()}}:
+                            <select ng-model="dash.filtersSelected[$index].value" id="filtersSelected{{$index}}"
+                                    ng-init="dash.filtersSelected[$index].value ? dash.filtersSelected[$index].value : dash.filtersSelected[$index].value = filter.values[0].value"
+                                    ng-change="updateChart(dash)"
+                                    ng-hide="dash.loading"
+                            >
+                                <option ng-repeat="item in filter.values" value="{{item.value}}">{{item.description ? item.description : item.value}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chartdiv" ng-show="dash.loading">
+                        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                    </div>
+                    <div class="chartdiv" id="{{dash._id}}" ng-init="loadChart(dash)" ng-show="!dash.loading && dash.amChartObj">
+                        Chart
+                    </div>
+                    <div class="chartdiv" ng-show="!dash.loading && !dash.amChartObj">
+                        <h4 class="text-center">{{dash.title}}</h4>
+                        <div class="full-h" ng-bind-html="dash.chartHTML">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div style="text-align:center">
+    <span class="dot" ng-repeat="slide in presentation.views" ng-click="currentSlide(slide.number)"></span>
+</div>
+

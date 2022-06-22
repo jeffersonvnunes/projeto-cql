@@ -1,0 +1,183 @@
+<h1 class="text-center">Fonte de Dados</h1>
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+<form ng-submit="save()">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" ng-disabled="!tested">
+            Salvar
+        </button>
+        <a href="#/datasources" class="btn btn-warning">Voltar</a>
+    </div>
+    <div class="row">
+        <section class="col-md-8">
+            <div class="row">
+                <div class="col-sm-8">
+                   <div class="form-group">
+                       <label for="name">Nome</label>
+                       <input type="text" class="form-control" id="name"
+                              name="name" required ng-model="datasource.name">
+                   </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="checkbox center-v">
+                        <label>
+                            <input type="checkbox" ng-model="datasource.useCache"> <b>Usar Cache</b>
+                        </label>
+                    </div>
+                    <div class="form-group" ng-show="datasource.useCache">
+                        <label for="cacheTime">Tempo (minutos)</label>
+                        <input type="text" class="form-control" id="cacheTime"
+                               name="cacheTime" ng-model="datasource.cacheTime">
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                   <div class="checkbox center-v">
+                       <label>
+                           <input type="checkbox" ng-model="datasource.active"> <b>Ativo</b>
+                       </label>
+                   </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="apiURL">URL</label>
+                        <input type="text" class="form-control" id="apiURL" name="apiURL" ng-model="datasource.apiURL"
+                               ng-change="setTested()">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="requestAction">Ação</label>
+                        <select class="form-control" ng-model="datasource.requestAction" id="requestAction" name="requestAction" ng-change="setTested()">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="dataservice">Serviço de Dados</label>
+                    <select class="form-control" ng-model="datasource.dataservice" id="dataservice">
+                        <option ng-repeat="dataservice in dataservices" value="{{dataservice._id}}">{{dataservice.name}}</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-12">
+                   <div class="form-group">
+                       <label for="query">Query</label>
+                       <div class="input-group">
+                           <span class="input-group-addon"><span class="btn {{getTestButtonColor()}}" ng-click="test(datasource)">Testar</span></span>
+                           <textarea rows="10" class="form-control" id="query" ng-change="setTested()"
+                                     name="query" required ng-model="datasource.query"></textarea>
+                       </div>
+                   </div>
+               </div>
+            </div>
+            <h3>
+
+            </h3>
+            <div class="row" ng-show="loading">
+                <div class="col-sm-2 col-centered" >
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-12" ng-show="!loading">
+                   <section class="table-responsive" style="max-height: 250px; padding-top: 10px;" ng-show="datasource.datafields">
+                       <table class="table table-hover">
+                           <tr>
+                               <th ng-repeat="field in datasource.datafields">
+                                   {{field}}
+                               </th>
+                           </tr>
+
+                           <tr ng-repeat="item in datasource.data">
+                               <td ng-repeat="field in datasource.datafields">
+                                   {{item[field]}}
+                               </td>
+                           </tr>
+                       </table>
+                   </section>
+               </div>
+            </div>
+        </section>
+        <aside class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <h4>Filtros da Pesquisa</h4>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h4 class="panel-title">Filtro</h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="btn btn-primary" style="margin-bottom: 15px;" ng-click="addFilter()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll-y" style="max-height: 11em;">
+                            <div class="row card" style="margin-right: 0" ng-repeat="filter in datasource.filters" ng-class="getFilterClass($index)"
+                                 ng-click="setFilter(filter, $index)">
+                                <div class="col-xs-11 same-height">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="filteridentifier" placeholder="Identificador"
+                                               name="filteridentifier" ng-model="filter.identifier">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="filterdescription" placeholder="Descrição"
+                                               name="filterdescription" ng-model="filter.description">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 same-height center">
+                                    <button type="button" class="btn btn-danger" ng-click="removeFilter($index)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div ng-show="datasource.selectedFilter" style="margin-top: 10px">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <h4 class="panel-title">Valores</h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="btn btn-primary" style="margin-bottom: 15px; margin-top: 10px;" ng-click="addValues()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll-y" style="max-height: 11em;">
+                            <div class="row card" style="margin-right: 0" ng-repeat="value in datasource.selectedFilter.values">
+                                <div class="col-xs-11 same-height">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="valuedescription" placeholder="Descrição"
+                                               name="valuedescription" ng-model="value.description">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="valuevalue" placeholder="Valor"
+                                               name="valuevalue" ng-model="value.value">
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 same-height center">
+                                    <div type="button" class="btn btn-danger" ng-click="removeValue($index)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</form>

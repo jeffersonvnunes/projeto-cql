@@ -4,4 +4,8 @@ module.exports = function (app) {
         baseRoute = app.routes.baseRoute;
 
     baseRoute.config('datasources', controller);
+
+    app.route('/datasources/:id/data')
+        .get(controller.getData)
+        .post(controller.getData);
 };

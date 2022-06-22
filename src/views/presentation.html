@@ -1,0 +1,153 @@
+<h1 class="text-center">Apresentação</h1>
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+
+<form ng-submit="save()">
+    <div class="row">
+        <div class="form-group col-xs-12">
+            <button type="submit" class="btn btn-primary">
+                Salvar
+            </button>
+            <a href="#/presentations" class="btn btn-warning">Voltar</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" required ng-model="presentation.name">
+            </div>
+        </div>
+        <div class="checkbox col-sm-2">
+            <label>
+                <input type="checkbox" ng-model="presentation.active"> Ativo
+            </label>
+        </div>
+        <div class="col-sm-4">
+            <button type="button" class="btn btn-primary" ng-click="addSlide()">
+                <span class="glyphicon glyphicon-plus"></span>
+                Novo Slide
+            </button>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 5px;" ng-show="presentation.views.length > 0">
+        <div class="col-xs-1 text-left">
+            <button type="button" class="btn btn-primary" ng-click="previousSlide()">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+            </button>
+        </div>
+        <div class="col-xs-10 text-center" >
+            <label>Slide {{selectedSlide ? selectedSlide.number + 1 : 0}}/{{presentation.views.length}}</label>
+        </div>
+        <div class="col-xs-1 text-right">
+            <button type="button" class="btn btn-primary" ng-click="nextSlide()">
+                <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
+    </div>
+    <div class="row well" ng-show="presentation.views.length > 0">
+        <div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger" ng-click="removeSlide()">
+                        <span class="glyphicon glyphicon-minus"></span>
+                        Remover Slide
+                    </button>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="title">Título</label>
+                        <input type="text" class="form-control" id="title" name="title" ng-model="selectedSlide.title">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="slideInterval">Tempo de Exibição do Slide (seg)</label>
+                        <input type="text" class="form-control" id="slideInterval" name="slideInterval" ng-model="selectedSlide.slideInterval">
+                    </div>
+                </div>
+                <div class="checkbox col-sm-2">
+                    <label>
+                        <input type="checkbox" ng-model="selectedSlide.active"> Ativo
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 5px;">
+                <div class="col-xs-3">
+
+                </div>
+                <div class="col-xs-5">
+                    <label>Dashboards</label>
+                </div>
+                <div class="col-xs-3">
+                    <label>Intervalo Atualização (seg)</label>
+                </div>
+                <div class="col-xs-1">
+                    <button type="button" class="btn btn-primary" ng-click="addDashboard()">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="scroll-y" style="max-height: 15em;">
+                <div class="row" ng-repeat="dash in selectedSlide.dashboards">
+                    <div class="form-group col-xs-8">
+                        <select class="form-control" ng-model="dash._id"
+                                id="dash{{$index}}" required ng-change="loadDashData(dash)">
+                            <option ng-repeat="dashboard in dashboards" value="{{dashboard._id}}">{{dashboard.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-3">
+                        <input type="text" class="form-control" id="updateInterval"
+                               name="updateInterval" ng-model="dash.updateInterval">
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="button" class="btn btn-danger" ng-click="removeDashboard($index)">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row well">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Visualização</h4>
+            <div class="checkbox">
+                <label>
+                    <input ng-model="coloredBackground" type="checkbox">Destacar área dashboards</input>
+                </label>
+            </div>
+        </div>
+    </div>
+    <h3 class="text-center">
+        {{selectedSlide.title}}
+    </h3>
+    <div gridster>
+        <ul>
+            <li gridster-item row="dash.row" col="dash.col" size-x="dash.sizeX" size-y="dash.sizeY"
+                ng-repeat="dash in selectedSlide.dashboards" ng-class="coloredBackground ? 'gridColored' : ''">
+                <div class="flex-display">
+                    <div class="filter" ng-repeat="filter in dash.filters">
+                        {{filter.getDescription()}}:
+                        <select ng-model="dash.filtersSelected[$index].value" id="filtersSelected{{$index}}" ng-change="updateChart(dash)">
+                            <option ng-repeat="item in filter.values" value="{{item.value}}">{{item.description ? item.description : item.value}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chartdiv" id="{{dash._id}}" ng-init="loadChart(dash)" ng-show="dash.amChartObj">
+                    Chart
+                </div>
+                <div class="chartdiv" ng-show="!dash.amChartObj">
+                    <h4 class="text-center">{{dash.title}}</h4>
+                    <div class="full-h" ng-bind-html="dash.chartHTML">
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

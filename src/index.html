@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="projetocql">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto CQL</title>
+
+    <!-- build:css /css/vendor.css -->
+    <link href="vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="vendor/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="vendor/angular-gridster/dist/angular-gridster.min.css" rel="stylesheet">
+    <link href="vendor/angular-material/angular-material.min.css" rel="stylesheet">
+
+    <!-- endbuild -->
+
+    <!-- build:css /css/style.css -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- endbuild -->
+
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top" ng-hide="hideNavbar">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Projeto CQL <span style="font-size: small; color: #00b3ee">Alpha Version</span></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/parameters">Parâmetros</a></li>
+                    <li><a href="#/dataservices">Serviço de Dados</a></li>
+                    <li><a href="#/datasources">Fonte de Dados</a></li>
+                    <li><a href="#/dashboards">Dashboards</a></li>
+                    <li><a href="#/presentations">Apresentações</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </nav>
+    <div class="container">
+        <div ng-view></div>
+    </div>
+
+    <!-- build:jsmin /js/vendor/jquery.js -->
+    <script type="text/javascript" src="vendor/jquery/dist/jquery.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:jsmin /js/vendor/bootstrap.js -->
+    <script type="text/javascript" src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:jsmin /js/vendor/angular.js -->
+    <script type="text/javascript" src="vendor/angular/angular.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-aria/angular-aria.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-messages/angular-messages.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-material/angular-material.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-gridster/dist/angular-gridster.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js /js/vendor/amcharts.js -->
+    <script type="text/javascript" src="vendor/amcharts/amcharts.js"></script>
+    <script type="text/javascript" src="vendor/amcharts/serial.js"></script>
+    <script type="text/javascript" src="vendor/amcharts/pie.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js /lib/charts.js -->
+    <script type="text/javascript" src="lib/charts/chart-base.js"></script>
+    <script type="text/javascript" src="lib/charts/chart-bar.js"></script>
+    <script type="text/javascript" src="lib/charts/chart-pie.js"></script>
+    <script type="text/javascript" src="lib/charts/chart-table.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:jsmin /js/scripts.js -->
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/services/BackEndService.js"></script>
+    <script type="text/javascript" src="js/services/DataSourceService.js"></script>
+    <script type="text/javascript" src="js/services/DashboardService.js"></script>
+    <script type="text/javascript" src="js/services/ParameterService.js"></script>
+    <script type="text/javascript" src="js/services/DataServiceService.js"></script>
+    <script type="text/javascript" src="js/services/PresentationService.js"></script>
+    <script type="text/javascript" src="js/controllers/ParametersController.js"></script>
+    <script type="text/javascript" src="js/controllers/ParameterController.js"></script>
+    <script type="text/javascript" src="js/controllers/DataServicesController.js"></script>
+    <script type="text/javascript" src="js/controllers/DataServiceController.js"></script>
+    <script type="text/javascript" src="js/controllers/DataSourcesController.js"></script>
+    <script type="text/javascript" src="js/controllers/DataSourceController.js"></script>
+    <script type="text/javascript" src="js/controllers/DashboardsController.js"></script>
+    <script type="text/javascript" src="js/controllers/DashboardController.js"></script>
+    <script type="text/javascript" src="js/controllers/VisualizationController.js"></script>
+    <script type="text/javascript" src="js/controllers/PresentationsController.js"></script>
+    <script type="text/javascript" src="js/controllers/PresentationController.js"></script>
+    <script type="text/javascript" src="js/controllers/PresentationSlideController.js"></script>
+    <!-- endbuild -->
+
+</body>
+</html>
