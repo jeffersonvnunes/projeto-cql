@@ -1,0 +1,193 @@
+<h3 class="text-center">Dashboard</h3>
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+<form ng-submit="save()">
+    <div class="row">
+        <div class="form-group col-xs-9">
+            <button type="submit" class="btn btn-primary">
+                Salvar
+            </button>
+            <a href="#/dashboards" class="btn btn-warning">Voltar</a>
+        </div>
+        <div class="col-xs-3 text-right" ng-show="dashboard.datasource && dashboard.presentation">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" ng-click="visualizer()">
+                Visualizar
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="name">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" required ng-model="dashboard.name">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <div class="checkbox center-v">
+                <label>
+                    <input type="checkbox" ng-model="dashboard.active"> Ativo
+                </label>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label for="identifier">Identificador</label>
+                <input type="text" class="form-control" id="identifier" name="identifier" ng-model="dashboard.identifier">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label for="query">Fonte de Dados</label>
+            <select class="form-control" ng-model="dashboard.datasource" id="query" ng-change="setFields()" required>
+                <option ng-repeat="datasource in datasources" value="{{datasource._id}}">{{datasource.name}}</option>
+            </select>
+
+        </div>
+        <div class="form-group col-sm-6">
+            <label for="presentation">Apresentação</label>
+            <select class="form-control" ng-model="dashboard.presentation" id="presentation" required>
+                <option ng-repeat="presentation in presentations" value="{{presentation[0]}}">{{presentation[1]}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row" ng-show="dashboard.datasource && dashboard.presentation">
+        <div class="col-sm-6">
+            <div class="form-group" ng-show="isVisibleSerie()">
+                <label for="serie">{{getSeieLabel()}}</label>
+                <select class="form-control" ng-model="dashboard.config.serie" id="serie">
+                    <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                </select>
+            </div>
+            <div class="form-group" ng-show="isVisibleValueLabel()">
+                <label for="valuelabel">Rótulo Valores</label>
+                <input type="text" class="form-control" id="valuelabel" name="valuelabel" ng-model="dashboard.config.valueLabel">
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group" ng-show="isVisibleSerie()">
+                <label for="serielabel">{{getSeieRotuloLabel()}}</label>
+                <select class="form-control" ng-model="dashboard.config.serieLabel" id="serielabel" ng-show="isImputSerieLabelSelect()">
+                    <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                </select>
+                <input type="text" class="form-control" id="serielabel" name="serielabel"
+                       ng-model="dashboard.config.serieLabel" ng-show="!isImputSerieLabelSelect()">
+            </div>
+            <div class="checkbox" ng-show="isVisibleZoom()">
+                <label>
+                    <input type="checkbox" ng-model="dashboard.config.zoomEnabled"> Zoom Ativo
+                </label>
+            </div>
+            <div class="checkbox" ng-show="isVisibleValueLabels()">
+                <label>
+                    <input type="checkbox" ng-model="dashboard.config.showValueLabels"> Etiqueta dos Valores
+                </label>
+            </div>
+            <div class="checkbox" ng-show="isVisibleHideLegend()">
+                <label>
+                    <input type="checkbox" ng-model="dashboard.config.hideLegend"> Ocultar Legenda
+                </label>
+            </div>
+            <div class="checkbox" ng-show="isVisibleDonut()">
+                <label>
+                    <input type="checkbox" ng-model="dashboard.config.donutStyle"> Rosca
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="dashboard.datasource && dashboard.presentation">
+        <div class="col-sm-12">
+            <div ng-show="isVisibleValues()">
+                <div class="row">
+                    <div class="col-xs-10">
+                        <h4>Valores</h4>
+                    </div>
+                    <div class="col-xs-2">
+                        <button type="button" class="btn btn-primary" ng-click="newValue()">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="scroll-y" style="margin-top: 10px; max-height: 25em;">
+                    <div class="row">
+                        <div class="col-sm-6" ng-repeat="val in dashboard.config.valueFields track by $index">
+                            <div class="row card" >
+                                <div class="col-xs-11 same-height">
+                                    <div class="form-group">
+                                        <label for="value{{$index}}">Valor {{$index+1}}</label>
+                                        <select class="form-control" ng-model="dashboard.config.valueFields[$index].value" id="value{{$index}}">
+                                            <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="labelvalue{{$index}}">Rótulo Valor {{$index+1}}</label>
+                                        <input type="text" class="form-control" id="labelvalue{{$index}}" name="labelvalue{{$index}}"
+                                               ng-model="dashboard.config.valueFields[$index].label">
+                                    </div>
+                                    <div class="checkbox" ng-show="isLineVisible()">
+                                        <label>
+                                            <input type="checkbox" ng-model="dashboard.config.valueFields[$index].line"> Linha
+                                        </label>
+                                    </div>
+                                    <div class="form-group" ng-show="isDataFormatVisible()">
+                                        <label for="dataFormat{{$index}}">Formato</label>
+                                        <select class="form-control" ng-model="dashboard.config.valueFields[$index].dataFormat" id="dataFormat{{$index}}">
+                                            <option ng-repeat="dataFormat in dataFormats" value="{{dataFormat[0]}}">{{dataFormat[1]}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6" ng-show="isColorVisible()">
+                                                <label for="color{{$index}}">Cor Valor</label>
+                                                <input type="color" name="color{{$index}}" id="color{{$index}}"
+                                                       ng-model="dashboard.config.valueFields[$index].color">
+                                                <input type="text" name="color{{$index}}input" id="color{{$index}}input"
+                                                       ng-model="dashboard.config.valueFields[$index].color">
+                                            </div>
+                                            <div class="col-sm-6" ng-show="isBackgroundColorVisible()">
+                                                <label for="backgroundColor{{$index}}">Cor Fundo</label>
+                                                <input type="color" name="backgroundColor{{$index}}" id="backgroundColor{{$index}}"
+                                                       ng-model="dashboard.config.valueFields[$index].backgroundColor">
+                                                <input type="text" name="backgroundColor{{$index}}input" id="backgroundColor{{$index}}input"
+                                                       ng-model="dashboard.config.valueFields[$index].backgroundColor">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1 same-height center">
+                                    <button type="button" class="btn btn-danger" ng-click="removeValue($index)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Modal -->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{dashboard.name}}</h4>
+            </div>
+            <div class="modal-body" id="chartdiv" style="max-height: 400px; min-height: 400px;" ng-show="amChartObj">
+                {{messageModal}}
+            </div>
+
+            <div class="modal-body scroll" ng-bind-html="chartHTML" style="max-height: 400px; min-height: 400px;" ng-show="!amChartObj">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

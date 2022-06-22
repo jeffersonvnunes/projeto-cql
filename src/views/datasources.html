@@ -1,0 +1,41 @@
+<div class="page-header">
+    <h1 class="text-center">
+        Fonte de Dados
+    </h1>
+</div>
+
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+
+<a ng-href="#/datasource" class="btn btn-primary">Nova Fonte de Dados</a>
+<label>Filtro</label>
+<input ng-model="filtro" type="search" placeholder="name">
+<span ng-show="datasources.length">
+    Fontes cadastradas: {{datasources.length}}
+</span>
+<p class="text-info" ng-hide="datasources.length">
+    Não há fontes de dados cadastradas
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover no-top-border">
+        <tr>
+            <th>
+                Fonte de dados
+            </th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="datasource in datasources | filter: filtro">
+            <td>
+                {{datasource.name}}
+            </td>
+            <td class="text-right">
+                <a class="btn btn-success" ng-href="#/datasource/{{datasource._id}}">Editar</a>
+                <button class="btn btn-danger" ng-click="delete($event, datasource)">
+                    Remover
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

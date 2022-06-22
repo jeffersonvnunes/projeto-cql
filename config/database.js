@@ -2,7 +2,10 @@ var mongoose = require('mongoose');
 
 module.exports = function(uri) {
 
-    mongoose.connect(uri);
+    mongoose.connect(uri, { useMongoClient: true,
+        server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+        replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+    });
 
     mongoose.connection.on('connected', function() {
         console.log('Mongoose! Conectado em ' + uri);
@@ -22,4 +25,4 @@ module.exports = function(uri) {
             process.exit(0);
         });
     });
-}
+};

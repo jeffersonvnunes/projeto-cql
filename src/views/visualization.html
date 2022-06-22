@@ -1,0 +1,24 @@
+<div class="flex-display">
+    <div class="filter" ng-repeat="filter in filters">
+        {{filter.getDescription()}}:
+        <select ng-model="filtersSelected[$index].value" id="filtersSelected{{$index}}"
+                ng-change="updateView()" ng-init="filtersSelected[$index].value = filter.values[0].value"
+                ng-hide="loading"
+        >
+            <option ng-repeat="item in filter.values" value="{{item.value}}">{{item.description ? item.description : item.value}}</option>
+        </select>
+    </div>
+</div>
+<div class="chartwrapper">
+    <div class="chartdiv" ng-show="loading">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div id="chartdiv" class="chartdiv" ng-show="!loading && chart.amChartObj">
+        {{message.text}}
+    </div>
+    <div class="chartdiv" ng-show="!loading && !chart.amChartObj">
+        <h4 class="text-center">{{chart.title}}</h4>
+        <div ng-bind-html="chartHTML">
+        </div>
+    </div>
+</div>

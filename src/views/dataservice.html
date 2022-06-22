@@ -1,0 +1,48 @@
+<h1 class="text-center">Serviço de Dados</h1>
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+<form ng-submit="save()">
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+        <a href="#/dataservices" class="btn btn-warning">Voltar</a>
+    </div>
+    <section>
+        <div class="row">
+            <div class="col-sm-8">
+               <div class="form-group">
+                   <label for="name">Nome</label>
+                   <input type="text" class="form-control" id="name"
+                          name="name" required ng-model="dataservice.name">
+               </div>
+            </div>
+            <div class="col-sm-4">
+               <div class="checkbox center-v">
+                   <label>
+                       <input type="checkbox" ng-model="dataservice.active"> Ativo
+                   </label>
+               </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label for="address">Endereço</label>
+                    <input type="text" class="form-control" id="address"
+                           name="address" required ng-model="dataservice.address">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="requestAction">Ação</label>
+                    <select class="form-control" ng-model="dataservice.requestAction" id="requestAction" name="requestAction" required>
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

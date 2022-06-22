@@ -1,0 +1,47 @@
+<div class="page-header">
+    <h1 class="text-center">
+        Apresentações
+    </h1>
+</div>
+
+<p ng-show="message.text">
+    {{message.text}}
+</p>
+
+<a ng-href="#/presentation" class="btn btn-primary">Nova Apresentação</a>
+<label>Filtro</label>
+<input ng-model="filtro" type="search" placeholder="name">
+<span ng-show="presentations.length">
+    Apresentações cadastradas: {{presentations.length}}
+</span>
+<p class="text-info" ng-hide="presentations.length">
+    Não há apresentações cadastradas
+</p>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover no-top-border">
+        <tr>
+            <th>
+                Visualizar
+            </th>
+            <th>
+                Apresentação
+            </th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="presentation in presentations | filter: filtro" ng-click="isComplete(presentation) ? visualize(presentation._id) : ''">
+            <td>
+                <span class="glyphicon glyphicon-dashboard" ng-show="isComplete(presentation)"></span>
+            </td>
+            <td>
+                {{presentation.name}}
+            </td>
+            <td class="text-right">
+                <a class="btn btn-success" ng-href="#/presentation/{{presentation._id}}">Editar</a>
+                <button class="btn btn-danger" ng-click="delete($event, presentation)">
+                    Remover
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>

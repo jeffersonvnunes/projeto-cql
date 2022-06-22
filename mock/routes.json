@@ -1,0 +1,7 @@
+{
+  "/datasources": "/datasources",
+  "/datasources/:id": "/datasource",
+  "/datasources/:id/data": "/datasource_data",
+  "/dashboards": "/dashboards",
+  "/dashboards/:id": "/dashboard"
+}
