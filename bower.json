@@ -1,0 +1,21 @@
+{
+  "name": "projetocql",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "jefferson.nunes <jeffersonvnunes@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
